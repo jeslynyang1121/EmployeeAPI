@@ -2,6 +2,7 @@ package com.challenge.api.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 public class CreateEmployeeRequest {
@@ -12,12 +13,10 @@ public class CreateEmployeeRequest {
     @NotBlank(message = "Last name may not be blank")
     private String lastName;
 
-    @NotBlank(message = "Salary may not be blank")
-    @Min(value = 0, message = "Salary must be greater than 0")
+    @NotNull(message = "Salary may not be blank") @Min(value = 0, message = "Salary must be greater than 0")
     private Integer salary;
 
-    @NotBlank(message = "Age may not be blank")
-    @Min(value = 0, message = "Age must be greater than 0")
+    @NotNull(message = "Age may not be blank") @Min(value = 0, message = "Age must be greater than 0")
     private Integer age;
 
     @NotBlank(message = "Job title may not be blank")
@@ -26,8 +25,7 @@ public class CreateEmployeeRequest {
     @NotBlank(message = "Email may not be blank")
     private String email;
 
-    @NotBlank(message = "Contract hire date may not be blank")
-    private Instant contractHireDate;
+    @NotNull(message = "Contract hire date may not be blank") private Instant contractHireDate;
 
     private Instant contractTerminationDate;
 
