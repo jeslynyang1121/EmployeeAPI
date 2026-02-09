@@ -3,6 +3,7 @@ package com.challenge.api.controller;
 import com.challenge.api.model.CreateEmployeeRequest;
 import com.challenge.api.model.Employee;
 import com.challenge.api.service.EmployeeService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/v1/employee")
 public class EmployeeController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -45,7 +46,8 @@ public class EmployeeController {
     public Employee getEmployeeByUuid(@PathVariable UUID uuid) {
         return employeeService
                 .getEmployeeByUuid(uuid)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee of UUID " + uuid + " not found"));
     }
 
     /**
@@ -54,7 +56,11 @@ public class EmployeeController {
      * @return Newly created Employee
      */
     @PostMapping
-    public Employee createEmployee(@RequestBody CreateEmployeeRequest requestBody) {
-        return employeeService.createEmployee(requestBody);
+    public Employee createEmployee(@Valid @RequestBody CreateEmployeeRequest requestBody) {
+        try {
+            return employeeService.createEmployee(requestBody);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 }

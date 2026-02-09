@@ -1,54 +1,130 @@
 # ReliaQuest's Entry-Level Java Challenge
 
-Please keep the following in mind while working on this challenge:
-* Code implementations will not be graded for **correctness** but rather on practicality
-* Articulate clear and concise design methodologies, if necessary
-* Use clean coding etiquette
-  * E.g. avoid liberal use of new-lines, odd variable and method names, random indentation, etc...
-* Test cases are not required
+My initial, secure REST API to allow access and updates to employee information. It consists of 3 endpoints, 
+listed in the following section. 
 
-## Problem Statement
+Thank you!
 
-Your employer has recently purchased a license to top-tier SaaS platform, Employees-R-US, to off-load all employee management responsibilities.
-Unfortunately, your company's product has an existing employee management solution that is tightly coupled to other services and therefore 
-cannot be replaced whole-cloth. Product and Development leads in your department have decided it would be best to interface
-the existing employee management solution with the commercial offering from Employees-R-US for the time being until all employees can be
-migrated to the new SaaS platform.
-
-Your ask is to expose employee information as a protected, secure REST API for consumption by Employees-R-US web hooks.
-The initial REST API will consist of 3 endpoints, listed in the following section. If for any reason the implementation 
-of an endpoint is problematic, the team lead will accept **pseudo-code** and a pertinent description (e.g. java-doc) of intent.
-
-Good luck!
-
-## Endpoints to implement (API module)
-
-_See `com.challenge.api.controller.EmployeeController` for details._
+## Implemented endpoints (API module)
 
 getAllEmployees()
 
-    output - list of employees
-    description - this should return all employees, unfiltered
+    output - list of all employees
+    description - returns all employees, unfiltered
 
 getEmployeeByUuid(...)
 
     path variable - employee UUID
     output - employee
-    description - this should return a single employee based on the provided employee UUID
+    description - returns a single employee based on the provided employee UUID
 
 createEmployee(...)
 
     request body - attributes necessary to create an employee
     output - employee
-    description - this should return a single employee, if created, otherwise error
+    description - returns a single employee, if created, otherwise error
+
+## API Usage Examples
+
+getAllEmployees()
+
+example usage
+
+    curl -X GET http://localhost:8080/api/v1/employee
+example response
+
+    [{
+      "uuid": "84d0adaa-2951-4a95-81f2-605f61bc502a",
+      "firstName":"John",
+      "lastName":"Doe",
+      "fullName":"John Doe",
+      "salary":80000,
+      "age":20,
+      "jobTitle":"Software Engineer Intern",
+      "email":"john.doe@example.com",
+      "contractHireDate":"2026-02-09T06:28:47.534859Z",
+      "contractTerminationDate":null
+    },
+    {
+      "uuid":"1b9a85dc-5494-41eb-929f-2d303acfad6f",
+      "firstName":"Jane",
+      "lastName":"Smith",
+      "fullName":"Jane Smith",
+      "salary":100000,
+      "age":30,
+      "jobTitle":"Software Engineer",
+      "email":"jane.smith@example.com",
+      "contractHireDate":"2026-02-09T06:28:47.535018Z",
+      "contractTerminationDate":null
+    },
+    {
+      "uuid":"f156cb81-20d4-4018-a902-8cdfee47891b",
+      "firstName":"Jeslyn",
+      "lastName":"Yang",
+      "fullName":"Jeslyn Yang",
+      "salary":90000,
+      "age":22,
+      "jobTitle":"Associate Software Engineer",
+      "email":"jeslynyang1121@gmail.com",
+      "contractHireDate":"2026-02-09T06:28:47.535052Z",
+      "contractTerminationDate":null
+    }]
+
+getEmployeeByUuid(...)
+
+example usage
+
+    curl -X GET http://localhost:8080/api/v1/employee/f156cb81-20d4-4018-a902-8cdfee47891b
+example response
+    
+    {
+      "uuid":"f156cb81-20d4-4018-a902-8cdfee47891b",
+      "firstName":"Jeslyn",
+      "lastName":"Yang",
+      "fullName":"Jeslyn Yang",
+      "salary":90000,
+      "age":22,
+      "jobTitle":"Associate Software Engineer",
+      "email":"jeslynyang1121@gmail.com",
+      "contractHireDate":"2026-02-09T06:28:47.535052Z",
+      "contractTerminationDate":null
+    }
+
+createEmployee(...)
+
+example usage
+
+    curl -X POST http://localhost:8080/api/v1/employee \
+    -H "Content-Type: application/json" \
+    -d '{
+    "firstName": "Bad",
+    "lastName": "Worker",
+    "salary": 130000,
+    "age": 27,
+    "jobTitle": "Senior Software Engineer",
+    "email": "bad.worker@example.com",
+    "contractHireDate": "2025-02-07T12:00:00Z"
+    "contractTerminationDate": "2025-02-07T12:00:00Z"
+    }'
+example response
+
+    {
+      "uuid":"6279fb9a-0e8d-491d-8ed7-f108c1f52db0",
+      "firstName":"Bad",
+      "lastName":"Worker",
+      "fullName":"Bad Worker",
+      "salary":130000,
+      "age":27,
+      "jobTitle":"Senior Software Engineer",
+      "email":"bad.worker@example.com",
+      "contractHireDate":"2025-02-07T12:00:00Z",
+      "contractTerminationDate":"2025-02-07T12:00:00Z"
+    }
 
 ## Code Formatting
-
-This project utilizes Gradle plugin [Diffplug Spotless](https://github.com/diffplug/spotless/tree/main/plugin-gradle) to enforce format
-and style guidelines with every build.
 
 To format code according to style guidelines, you can run **spotlessApply** task.
 `./gradlew spotlessApply`
 
-The spotless plugin will also execute check-and-validation tasks as part of the gradle **build** task.
+The spotless plugin will also execute check-and-validation tasks as part of the Gradle **build** task.
 `./gradlew build`

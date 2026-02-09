@@ -1,17 +1,35 @@
 package com.challenge.api.model;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import java.time.Instant;
 
 public class CreateEmployeeRequest {
 
+    @NotBlank(message = "First name may not be blank")
     private String firstName;
+
+    @NotBlank(message = "Last name may not be blank")
     private String lastName;
-    private String fullName;
+
+    @NotBlank(message = "Salary may not be blank")
+    @Min(value = 0, message = "Salary must be greater than 0")
     private Integer salary;
+
+    @NotBlank(message = "Age may not be blank")
+    @Min(value = 0, message = "Age must be greater than 0")
     private Integer age;
+
+    @NotBlank(message = "Job title may not be blank")
     private String jobTitle;
+
+    @NotBlank(message = "Email may not be blank")
     private String email;
+
+    @NotBlank(message = "Contract hire date may not be blank")
     private Instant contractHireDate;
+
+    private Instant contractTerminationDate;
 
     public CreateEmployeeRequest(
             String firstName,
@@ -20,15 +38,16 @@ public class CreateEmployeeRequest {
             Integer age,
             String jobTitle,
             String email,
-            Instant contractHireDate) {
+            Instant contractHireDate,
+            Instant contractTerminationDate) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.fullName = firstName + " " + lastName;
         this.salary = salary;
         this.age = age;
         this.jobTitle = jobTitle;
         this.email = email;
         this.contractHireDate = contractHireDate;
+        this.contractTerminationDate = contractTerminationDate;
     }
 
     public String getFirstName() {
@@ -37,7 +56,6 @@ public class CreateEmployeeRequest {
 
     public void setFirstName(String name) {
         this.firstName = name;
-        updateFullName();
     }
 
     public String getLastName() {
@@ -46,23 +64,6 @@ public class CreateEmployeeRequest {
 
     public void setLastName(String name) {
         this.lastName = name;
-        updateFullName();
-    }
-
-    private void updateFullName() {
-        if (firstName != null && lastName != null) {
-            this.fullName = firstName + " " + lastName;
-        } else {
-            this.fullName = null;
-        }
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String name) {
-        this.fullName = name;
     }
 
     public Integer getSalary() {
@@ -103,5 +104,13 @@ public class CreateEmployeeRequest {
 
     public Instant getContractHireDate() {
         return contractHireDate;
+    }
+
+    public void setContractTerminationDate(Instant date) {
+        this.contractTerminationDate = date;
+    }
+
+    public Instant getContractTerminationDate() {
+        return contractTerminationDate;
     }
 }

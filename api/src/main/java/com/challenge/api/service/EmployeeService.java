@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeService {
 
-    private Map<UUID, Employee> employees = new ConcurrentHashMap<>();
+    private final Map<UUID, Employee> employees = new ConcurrentHashMap<>();
 
     public EmployeeService() {
         setup();
@@ -40,7 +40,7 @@ public class EmployeeService {
                 request.getJobTitle(),
                 request.getEmail(),
                 request.getContractHireDate(),
-                null);
+                request.getContractTerminationDate());
         employees.put(uuid, employee);
         return employee;
     }
