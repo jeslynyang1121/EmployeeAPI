@@ -16,7 +16,6 @@ public class CreateEmployeeRequest {
     public CreateEmployeeRequest(
             String firstName,
             String lastName,
-            String fullName,
             Integer salary,
             Integer age,
             String jobTitle,
