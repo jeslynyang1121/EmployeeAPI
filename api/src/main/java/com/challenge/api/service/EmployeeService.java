@@ -30,6 +30,8 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(CreateEmployeeRequest request) {
+        isEmailUnique(request.getEmail());
+
         UUID uuid = UUID.randomUUID();
         EmployeeDTO employee = new EmployeeDTO(
                 uuid,
@@ -43,6 +45,14 @@ public class EmployeeService {
                 request.getContractTerminationDate());
         employees.put(uuid, employee);
         return employee;
+    }
+
+    public void isEmailUnique(String email) {
+        boolean notUnique =
+                employees.values().stream().anyMatch(e -> e.getEmail().equalsIgnoreCase(email));
+        if (notUnique) {
+            throw new IllegalArgumentException("Email is already taken");
+        }
     }
 
     private void setup() {
